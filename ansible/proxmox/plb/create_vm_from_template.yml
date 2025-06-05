@@ -20,7 +20,7 @@
         api_token_secret: '{{ api_token_secret }}'
         # Template vm parameters
         clone: 'example' #Name of template
-        vmid: 999 #For templates i set descending IDs starting from 999
+        vmid: 999 #For templates I set descending IDs starting from 999
         ########################
         full: yes
         format: qcow2
