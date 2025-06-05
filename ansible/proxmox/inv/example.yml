@@ -5,4 +5,4 @@ proxmox_host:
   vars:
     ansible_ssh_user: user 
     ansible_ssh_private_key_file: /path/to/key
-    host_parameters: #Path to vaulted parameters of host, must be set from playbook perpective
+    host_parameters: #Path to ansible vault file with parameters of host, must be set from playbook perpective

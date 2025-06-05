@@ -1,0 +1,31 @@
+#Very simple playbook to deploy Node Exporter
+- hosts: all
+
+  tasks: 
+
+  - name: Get node_exporter
+    ansible.builtin.get_url:
+      url: https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz
+      dest: ~/
+      mode: 0440
+
+  - name: Extract node_exporter
+    ansible.builtin.unarchive:
+      src: ~/node_exporter-1.7.0.linux-amd64.tar.gz
+      dest: ~/
+      remote_src: true 
+
+  - name: Create node_exporter Unit file
+    ansible.builtin.template:
+      src: ../templates/node_exporter.service
+      dest: /etc/systemd/system/node_exporter.service
+
+  - name: Systemd daemon reload
+    ansible.builtin.systemd_service:
+      daemon_reload: true
+
+  - name: Start and enable node_exporter
+    ansible.builtin.systemd_service:
+      name: node_exporter
+      state: started
+      enabled: true 

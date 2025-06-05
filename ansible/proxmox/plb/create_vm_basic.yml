@@ -1,0 +1,55 @@
+- hosts: all
+  gather_facts: false
+  vars:
+    vm: #Name of folder in vm_parameters. Name of folder will be used as name of VM and hostname. Set this variable using option --extra-vars={{yourvmname}} from cli
+  vars_files:
+    - '{{ host_parameters }}'
+    - '../misc/vm_parameters/{{ vm }}/net.yml' # Interfaces info
+    - '../misc/vm_parameters/{{ vm }}/params.yml' # Other parameters
+
+  tasks:
+  
+  - name: Setup create VM
+    ansible.builtin.proxmox_kvm:
+      # API info
+      api_host: '{{ api_host }}'
+      api_user: '{{ api_user }}'
+      api_token_id: '{{ api_token_id }}'
+      api_token_secret: '{{ api_token_secret }}'
+      # VM params
+      node: '{{ params.node }}'
+      vmid: '{{ params.vmid }}'
+      name: '{{ vm }}'
+      cores: '{{ params.cores }}'
+      memory: '{{ params.memory }}'
+      virtio: '{"virtio0":"{{ params.storage }}:{{ params.disk_size }}"}' 
+      format: qcow2
+      update: false #false to avoid altering existing VMs
+      timeout: 600
+    register: result
+
+  - name: "Prevent VM collisions. state SKIPPING means OK"
+    fail:
+      msg: "VM with given ID exists"
+    when: result is not changed
+      
+
+  - name: Add interfaces
+    community.general.proxmox_nic:
+      # API info
+      api_host: '{{ api_host }}'
+      api_user: '{{ api_user }}'
+      api_token_id: '{{ api_token_id }}'
+      api_token_secret: '{{ api_token_secret }}'
+      #Params
+      vmid: '{{ params.vmid }}'
+      interface: '{{interface.name}}'
+      bridge: '{{interface.bridge}}'
+    loop: "{{interfaces}}"
+    loop_control:
+      loop_var: interface
+
+  - debug:
+      msg:
+      - "VM successfully created, you can install OS now"
+      - "OS ISO must be added to VM hardware" 

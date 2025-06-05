@@ -1,3 +1,5 @@
+# Playbook to clone vm from template. In this example template is configured with cloud-init.
+# If you dont have cloud init configured, you can't use options ciuser, cipassword and sshkeys
 - hosts: all
   gather_facts: false
   vars:

@@ -1,0 +1,48 @@
+#Playbook for multiple lxc container deployment
+- hosts: all
+  become: true
+  vars:
+    nodefile: 
+  
+  vars_files:
+    - '{{ host_parameters }}'
+    - '../misc/lxc_parameters/{{ nodefile }}' # Lxc parameters declaration
+
+
+
+  tasks:
+
+  - name: Setup containers and master node
+    community.general.proxmox:
+    # Host info
+      api_host: '{{api_host}}'
+      api_user: '{{ api_user }}'
+      api_token_id: '{{ api_token_id }}'
+      api_token_secret: '{{ api_token_secret }}'
+    #
+      vmid: '{{node.num}}'
+      node: '{{node.host_node}}'
+      hostname: "node-{{node.num}}-{{node.hostname}}"
+      password: '{{pass}}'
+      ostemplate: local:vztmpl/ubuntu-24.10-standard_24.10-1_amd64.tar.zst #Path to container template.
+      disk: 'local-lvm:{{disk_size}}'
+      netif: '{"{{node.ipconf_dev}}":"name={{node.ipconf_name}},gw={{node.ipconf_gw}},ip={{node.ipconf_addr}},bridge={{node.ipconf_bridge}}"}'
+      pubkey: '{{ ssh_key }}'
+      unprivileged: false
+      timeout: 600
+      swap: 0
+    loop: "{{nodes_list}}"
+    loop_control:
+      loop_var: node
+
+  - name: Start nodes
+    community.general.proxmox:
+      vmid: '{{node.num}}'
+      api_host: '{{api_host}}'
+      api_user: '{{ api_user }}'
+      api_token_id: '{{ api_token_id }}'
+      api_token_secret: '{{ api_token_secret }}'
+      state: started
+    loop: "{{nodes_list}}"
+    loop_control:
+      loop_var: node

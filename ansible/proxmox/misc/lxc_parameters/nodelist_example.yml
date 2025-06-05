@@ -1,0 +1,5 @@
+# Different approach with host parameters declaration in lxc, for simplier multinode deployment. Problem with this way is single net interface for each node
+nodes_list:
+  - { host_node: 'your proxmox node', num: '110', hostname: 'node1', disk_size: '20', ipconf_dev: 'net0', ipconf_name: 'eth0', ipconf_addr: '', ipconf_gw: '', ipconf_bridge: '' }
+  - { host_node: '', num: '111', hostname: 'node2', disk_size: '20', ipconf_dev: 'net0', ipconf_name: 'eth0', ipconf_addr: '', ipconf_gw: '', ipconf_bridge: ''}
+  - { host_node: '', num: '112', hostname: 'node2', disk_size: '20', ipconf_dev: 'net0', ipconf_name: 'eth0', ipconf_addr: '', ipconf_gw: '', ipconf_bridge: ''}

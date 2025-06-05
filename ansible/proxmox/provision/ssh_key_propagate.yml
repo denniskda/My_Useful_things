@@ -1,0 +1,16 @@
+- hosts: 
+  become: true
+
+  tasks:
+
+    - name: Propagate key file
+      ansible.posix.authorized_key:
+        user: '{{ ansible_ssh_user }}'
+        state: present
+        key: "{{ ssh_key }}"
+
+    - name: Restart sshd
+      ansible.builtin.systemd_service:
+        name: sshd
+        state: restarted
+        enabled: true
