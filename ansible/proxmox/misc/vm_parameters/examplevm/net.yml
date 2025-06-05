@@ -2,5 +2,5 @@
 # name: name of interface must be set ad name+increment value. Can't set VM with two interfaces like net0 and net66 must be net0 net1 etc.
 # bridge: name of bridge interface on host.   
 interfaces:
-  - { name: 'net0', bridge: 'vmbr0', ipconfig: 'ipconfig0', address: 'ip=192.168.0.1/24,gw=192.168.111.1'}
+  - { name: 'net0', bridge: 'vmbr0', ipconfig: 'ipconfig0', address: 'ip=192.168.0.1/24,gw=192.168.0.1'}
   - { name: 'net1', bridge: 'vmbr1', ipconfig: 'ipconfig1', address: 'ip=192.168.0.1/24'} 
