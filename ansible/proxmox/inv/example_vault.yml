@@ -1,0 +1,16 @@
+# Set of variables needed to manage proxmox
+api_host: #ip of proxmox host
+api_user: #user@pam or user@ve depending on your auth configuration 
+# Token 
+# Api token is used for authentication to your proxmox cluster
+# Generate new token key:
+# Datacenter >> API Tokens >> Add Chose user token will be associated with, and name
+# I always set privilege separation, to manage permissions from Zero Trust perspective
+# If you want you can ucheck this option, then token will have same permissions as account it associated with 
+api_token_id:
+# After your token is generated don't forget to copy the value, it will not be shown again
+api_token_secret:
+# This ssh key is used to load into VMs or LXC containers
+ssh_key:
+# Password can be used instead of key file
+password:

@@ -1,0 +1,13 @@
+#Virtualized hardware parameters for VM
+params:
+  vmid: 101 #Unique ID for VM
+  disk_size: 50 #Disk size used different in various ansible modules
+                #Sometimes used as target size, and sometimes as increment
+  memory: 4096
+  cores: 8
+  node: proxmox_host #Name or adddess of target proxmox node to deploy VM. 
+  storage: local-lvm #Targer storage of proxmox to deploy VM disk
+  user: "example"
+  password: "example"
+  tags:
+    - testing
